@@ -44,7 +44,8 @@ If everything worked, the media player will open and play the video!
 
 
 ~~1.1.0 upcoming will have a slight UI redesign.~~
- 1.1.1 (planned concept) will have ease of use functions to make it more intuitive and easy to use.
+ 
+ ~~1.1.1~~ 1.1.2 (planned concept) will have ease of use functions to make it more intuitive and easy to use.
  
 ---
 
