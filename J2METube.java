@@ -4,24 +4,21 @@ import javax.microedition.io.*;
 import java.io.*;
 import java.util.Vector;
 
-/**
- * J2METube for Nokia Asha / S40
- * Features PC RTSP Proxy integration & Startup Config
- */
+
 public class J2METube extends MIDlet implements CommandListener {
     private Display display;
     
-    // UI Components
+    
     private Form configForm;
     private Form searchForm;
     private List resultsList;
     private TextField ipField;
     private TextField searchField;
     
-    // Commands
+    
     private Command nextCmd, searchCmd, exitCmd, backCmd, playCmd;
     
-    // Data
+    
     private Vector videoIds = new Vector();
     private String serverAddress = "";
 
@@ -31,13 +28,13 @@ public class J2METube extends MIDlet implements CommandListener {
     }
 
     private void initUI() {
-        // Shared Exit Command
+        
         exitCmd = new Command("Exit", Command.EXIT, 2);
         backCmd = new Command("Back", Command.BACK, 1);
 
-        // 1. Config Screen (App Start)
+        
         configForm = new Form("Server Config");
-        // Default placeholder so you only have to change the last digits
+        
         ipField = new TextField("PC IP & Port:", "192.168.1.X:5000", 100, TextField.ANY);
         nextCmd = new Command("Next", Command.OK, 1);
         
@@ -46,27 +43,27 @@ public class J2METube extends MIDlet implements CommandListener {
         configForm.addCommand(exitCmd);
         configForm.setCommandListener(this);
 
-        // 2. Search Screen
+        
         searchForm = new Form("J2METube Search");
         searchField = new TextField("Query:", "dankpods", 50, TextField.ANY);
         searchCmd = new Command("Search", Command.OK, 1);
         
         searchForm.append(searchField);
         searchForm.addCommand(searchCmd);
-        searchForm.addCommand(backCmd); // Goes back to Config
+        searchForm.addCommand(backCmd); 
         searchForm.addCommand(exitCmd);
         searchForm.setCommandListener(this);
         
-        // 3. Results Screen
+        
         resultsList = new List("Results", List.IMPLICIT);
         playCmd = new Command("Play", Command.ITEM, 1);
         
-        resultsList.addCommand(backCmd); // Goes back to Search
+        resultsList.addCommand(backCmd); 
         resultsList.setCommandListener(this);
     }
 
     public void startApp() {
-        // Always start at the Config screen
+    
         display.setCurrent(configForm);
     }
 
@@ -74,24 +71,24 @@ public class J2METube extends MIDlet implements CommandListener {
         if (c == exitCmd) {
             notifyDestroyed();
         } 
-        // Flow: Config -> Search
+        
         else if (c == nextCmd && d == configForm) {
             serverAddress = ipField.getString();
             display.setCurrent(searchForm);
         } 
-        // Flow: Search -> Back to Config
+        
         else if (c == backCmd && d == searchForm) {
             display.setCurrent(configForm);
         }
-        // Flow: Search -> Run Query
+        
         else if (c == searchCmd && d == searchForm) {
             performSearch(searchField.getString());
         } 
-        // Flow: Results -> Back to Search
+        
         else if (c == backCmd && d == resultsList) {
             display.setCurrent(searchForm);
         } 
-        // Flow: Results -> Play Video (RTSP Proxy)
+        
         else if (d == resultsList && c == List.SELECT_COMMAND) {
             int index = resultsList.getSelectedIndex();
             if (index != -1) {
@@ -162,8 +159,8 @@ public class J2METube extends MIDlet implements CommandListener {
     }
 
     private void playVideoViaProxy(final String vid) {
-        // UI Feedback while PC transcodes
-        Alert loadingAlert = new Alert("Connecting", "Waking up PC server...", null, AlertType.INFO);
+        
+        Alert loadingAlert = new Alert("Connecting", "Contacting proxy server...", null, AlertType.INFO);
         loadingAlert.setTimeout(3000);
         display.setCurrent(loadingAlert, resultsList);
 
@@ -172,7 +169,7 @@ public class J2METube extends MIDlet implements CommandListener {
                 HttpConnection hc = null;
                 InputStream is = null;
                 try {
-                    // Call the Flask server on the PC
+                    
                     String proxyUrl = "http://" + serverAddress + "/play?v=" + vid;
                     hc = (HttpConnection) Connector.open(proxyUrl);
                     is = hc.openInputStream();
@@ -183,10 +180,10 @@ public class J2METube extends MIDlet implements CommandListener {
                         sb.append((char) ch);
                     }
                     
-                    // The PC returns the RTSP link (e.g., rtsp://192.168.1.5:8554/nokia)
+                    
                     String rtspUrl = sb.toString().trim(); 
                     
-                    // Hand the true RTSP stream to the Nokia Media Player
+                    
                     platformRequest(rtspUrl);
                     
                 } catch (Exception e) {
@@ -216,4 +213,5 @@ public class J2METube extends MIDlet implements CommandListener {
 
     public void pauseApp() {}
     public void destroyApp(boolean unconditional) {}
+
 }
