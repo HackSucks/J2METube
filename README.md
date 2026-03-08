@@ -1,5 +1,5 @@
 # J2METube
-YouTube implementation for J2ME equipped devices with MIDP 2.0 and CLDC 1.1, and JSR 135 using a proxy server.
+YouTube implementation for J2ME equipped devices with MIDP 2.1 and CLDC 1.1, and JSR 135 using a proxy server.
 
 ---
 
@@ -18,7 +18,7 @@ You can self-host it on your IP currently, unless some maniac would offer to hos
 It uses an Invidious instance, specifically S60Tube:  
 http://s60tube.io.vn
 
-So far the app is very basic — __no thumbnails or anything yet.__ 
+So far the app is very basic — ~~no thumbnails or anything yet.~~
 
 1. Use the search bar.
 2. Click the video you want.
@@ -43,9 +43,9 @@ If everything worked, the media player will open and play the video!
 # update watch :O
 
 
-1.1.0 upcoming will have a slight UI redesign.
-1.1.1 (planned concept) will have ease of use functions to make it more intuitive and easy to use.
-1.1.0's jar release will use MIDP 2.0 instead of 2.1 for maximum compatibility. every subsequent release will also use MIDP 2.0. CLDC 1.1 will be kept as it has some very important functions needed.
+~~1.1.0 upcoming will have a slight UI redesign.~~
+ 1.1.1 (planned concept) will have ease of use functions to make it more intuitive and easy to use.
+ 
 ---
 
 # Bugs?
