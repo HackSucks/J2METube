@@ -1,5 +1,5 @@
 # J2METube
-YouTube implementation for J2ME equipped devices with MIDP 2.1 and CLDC 1.1, and JSR 135 using a proxy server.
+YouTube implementation for J2ME equipped devices with MIDP 2.0 and CLDC 1.1, and JSR 135 using a proxy server.
 
 ---
 
