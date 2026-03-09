@@ -787,10 +787,8 @@ pathDefaults:
 # for example "~^(test1|test2)$" will match both "test1" and "test2",
 # for example "~^prefix" will match all paths that start with "prefix".
 paths:
-  nokia:
-    # This caches the stream so the phone can "catch up"
-    source: publisher
-    record: no
-
-  # This must be aligned with "nokia"
-  all_others:
+  # This line defines the regex path directly as the key
+  ~^(.+)$:
+    runOnDemand: py "launch_ffmpeg.py" $RTSP_PATH
+    runOnDemandRestart: yes
+    runOnDemandCloseAfter: 5s
