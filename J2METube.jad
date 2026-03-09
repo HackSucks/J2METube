@@ -1,8 +1,8 @@
 MIDlet-Name: J2METube
-MIDlet-Version: 1.1.1
+MIDlet-Version: 1.1.2
 MIDlet-Vendor: HackSucks
 MIDlet-Jar-URL: J2METube.jar
-MIDlet-Jar-Size: 9684
+MIDlet-Jar-Size: 16150
 MIDlet-1: J2METube,,J2METube
 MicroEdition-Configuration: CLDC-1.1
 MicroEdition-Profile: MIDP-2.1
