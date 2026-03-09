@@ -62,9 +62,7 @@ If everything worked, the media player will open and play the video!
 
 ~~There is an issue where **ffmpeg streams about ~10 seconds of video before handing the RTSP stream to the device**.~~
 
-~~This means by the time you open the stream, the video may already be ~15 seconds in.~~
-
-~~This should be fixed in a future update to the server package :3c.~~ This bug should hopefully have been fixed in SU1.2/ServerUpdate 1.2.
+~~This should be fixed in a future update to the server package :3c.~~ ***This bug should hopefully have been fixed in SU1.2/ServerUpdate 1.2.***
 
 ---
 
