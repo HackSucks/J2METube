@@ -3,33 +3,19 @@ import javax.microedition.lcdui.*;
 import javax.microedition.io.*;
 import java.io.*;
 import java.util.Vector;
-
-/**
- * J2METube for Nokia Asha / S40
- *
- * Features:
- *  - Splash/welcome screen on first launch
- *  - Ticker status bar showing current activity
- *  - Thumbnails (HTTP, sequential, default.jpg)
- *  - Detail screen fetches /api/v1/videos/:id for real likes + full description
- *  - Search history (last 5 queries) with empty-state message
- *  - Confirmation before clearing history
- *  - About screen pulls real info from JAD manifest + System properties
- *  - Friendlier error messages throughout
- */
 public class J2METube extends MIDlet implements CommandListener {
 
     private static final String API_BASE    = "http://s60tube.io.vn/api/v1";
     private static final int    HISTORY_MAX = 5;
 
-    // ---- App identity (read from JAD/manifest at runtime) ----
+    
     private String appName    = "J2METube";
     private String appVersion = "1.0";
     private String appVendor  = "";
 
     private Display display;
 
-    // Screens
+    
     private Form   splashForm;
     private Form   configForm;
     private Form   searchForm;
@@ -38,41 +24,38 @@ public class J2METube extends MIDlet implements CommandListener {
     private List   resultsList;
     private List   historyList;
 
-    // Fields
+    
     private TextField ipField;
     private TextField searchField;
 
-    // Commands
+    
     private Command nextCmd, searchCmd, exitCmd, backCmd;
     private Command watchCmd, backToResultsCmd, aboutCmd, backFromAboutCmd;
     private Command historyCmd, backFromHistoryCmd, clearHistoryCmd, clearHistoryConfirmCmd;
     private Command clearSearchCmd, okSplashCmd;
 
-    // ---- Search result data (parallel vectors) ----
+    
     private Vector videoIds      = new Vector();
     private Vector videoTitles   = new Vector();
-    private Vector videoDurations = new Vector(); // formatted "mm:ss" from search results if present
+    private Vector videoDurations = new Vector(); 
     private Vector thumbImages   = new Vector();
 
-    // ---- Search history ----
-    private Vector searchHistory = new Vector(); // most recent first
+    
+    private Vector searchHistory = new Vector(); 
 
     private String serverAddress = "";
     private int    selectedIndex = -1;
 
     private volatile boolean thumbLoaderRunning = false;
 
-    // =========================================================================
+    
     public J2METube() {
         display = Display.getDisplay(this);
         readManifestProps();
         initUI();
     }
 
-    /**
-     * Pull app name, version and vendor from the JAD/manifest so the About
-     * screen always reflects reality, not a hard-coded string.
-     */
+   
     private void readManifestProps() {
         String n = getAppProperty("MIDlet-Name");
         String v = getAppProperty("MIDlet-Version");
@@ -82,13 +65,11 @@ public class J2METube extends MIDlet implements CommandListener {
         if (o != null && o.length() > 0) appVendor  = o;
     }
 
-    // =========================================================================
-    // UI construction
-    // =========================================================================
+   
 
     private void initUI() {
 
-        // ---------- Commands ----------
+        
         exitCmd              = new Command("Exit",    Command.EXIT, 9);
         backCmd              = new Command("Back",    Command.BACK, 1);
         backToResultsCmd     = new Command("Back",    Command.BACK, 1);
@@ -100,11 +81,11 @@ public class J2METube extends MIDlet implements CommandListener {
         clearHistoryCmd      = new Command("Clear History",   Command.ITEM, 3);
         clearHistoryConfirmCmd= new Command("Confirm Clear",  Command.ITEM, 2);
         clearSearchCmd       = new Command("Clear",   Command.ITEM, 3);
-        nextCmd              = new Command("Next \u00bb", Command.OK, 1); // "Next »"
+        nextCmd              = new Command("Next \u00bb", Command.OK, 1); 
         searchCmd            = new Command("Search",  Command.OK,   1);
         okSplashCmd          = new Command("Let's Go!", Command.OK, 1);
 
-        // ---------- Splash ----------
+        
         splashForm = new Form(appName);
         splashForm.append(
             "\n  Welcome to " + appName + "!\n\n" +
@@ -120,7 +101,7 @@ public class J2METube extends MIDlet implements CommandListener {
         splashForm.addCommand(exitCmd);
         splashForm.setCommandListener(this);
 
-        // ---------- Config ----------
+        
         configForm = new Form("Server Setup");
         configForm.append(
             new StringItem(null,
@@ -136,7 +117,7 @@ public class J2METube extends MIDlet implements CommandListener {
         configForm.addCommand(exitCmd);
         configForm.setCommandListener(this);
 
-        // ---------- Search ----------
+        
         searchForm = new Form(appName + " Search");
         searchForm.append(
             new StringItem(null, "Type a search term below.\nTip: try an artist, song, or topic.\n")
@@ -151,38 +132,34 @@ public class J2METube extends MIDlet implements CommandListener {
         searchForm.addCommand(exitCmd);
         searchForm.setCommandListener(this);
 
-        // ---------- Results ----------
+        
         resultsList = new List("Results", List.IMPLICIT);
         resultsList.addCommand(backCmd);
         resultsList.addCommand(aboutCmd);
         resultsList.setCommandListener(this);
 
-        // ---------- Detail (rebuilt per video) ----------
+        
         detailForm = new Form("Video Info");
         detailForm.addCommand(watchCmd);
         detailForm.addCommand(backToResultsCmd);
         detailForm.addCommand(exitCmd);
         detailForm.setCommandListener(this);
 
-        // ---------- History ----------
+        
         historyList = new List("Recent Searches", List.IMPLICIT);
         historyList.addCommand(backFromHistoryCmd);
         historyList.addCommand(clearHistoryCmd);
         historyList.addCommand(exitCmd);
         historyList.setCommandListener(this);
 
-        // ---------- About ----------
+        
         buildAboutScreen();
     }
 
-    /**
-     * Build the About screen using real manifest + System properties.
-     * Called once from initUI; can be re-called to refresh.
-     */
     private void buildAboutScreen() {
         aboutForm = new Form("About " + appName);
 
-        // -- App identity from manifest --
+        
         StringBuffer info = new StringBuffer();
         info.append(appName);
         if (appVersion.length() > 0) info.append("  v").append(appVersion);
