@@ -3,5 +3,4 @@ MIDlet-Version: 1.2.0
 MIDlet-Vendor: HackSucks
 MIDlet-1: J2METube,,J2METube
 MicroEdition-Configuration: CLDC-1.1
-
 MicroEdition-Profile: MIDP-2.1
